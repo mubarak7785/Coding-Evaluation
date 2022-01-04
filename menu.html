@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      h1 {
+        text-align: center;
+        color: darkblue;
+        font-family: calibri;
+        font-size: 40px;
+      }
+      #container{
+          
+          display: grid;
+          grid-template-columns: repeat(3,1fr);
+          grid-gap: 30px;
+          
+      }
+      #cart{
+          border: 1px solid black;
+          width: 50px;
+          height: 30px;
+          margin-left: 80%;
+          margin-bottom: 50px;
+          background-color: darkgrey;
+          text-align: center;
+          padding: 10px;
+      }
+      #cart:hover{
+          cursor: pointer;
+      }
+      p{
+          margin-left: 80%;
+          font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Menu</h1>
+    <p>go to cart by clicking this below box</p>
+    <div id="cart">
+       
+    </div>
+    <div id="container">
+      
+    </div>
+  </body>
+</html>
+<script>
+
+    var arr_cart= JSON.parse(localStorage.getItem("Meals")) || []
+  getMeal();
+  async function getMeal() {
+    try {
+      let response = await fetch(
+        `https://themealdb.com/api/json/v1/1/categories.php`
+      );
+
+      let res = await response.json();
+      let data = res.categories;
+      showMeal(data);
+
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  function showMeal(data) {
+    data.forEach(function (elem) {
+      var image = document.createElement("img");
+      image.src = elem.strCategoryThumb;
+      var name = document.createElement("h2");
+      name.textContent = elem.strCategory;
+      var price = document.createElement("h3");
+      price.textContent = Math.floor(Math.random() * 500);
+
+      image_div = document.createElement("div");
+      image_div.append(image);
+      var button=document.createElement("button")
+      button.textContent="Add to cart"
+      
+      button.addEventListener("click",function(){
+        // document.querySelector("#cart").
+          var mealObj=elem;
+          arr_cart.push(elem);
+          localStorage.setItem("Meals",JSON.stringify(arr_cart)) 
+          document.querySelector("#cart").textContent=arr_cart.length
+      })
+      document.querySelector("#cart").textContent=arr_cart.length
+      
+     
+      data_div = document.createElement("div");
+      data_div.append(name, price,button);
+      var main_div=document.createElement("div")
+      main_div.append(image_div, data_div);
+      document.querySelector("#container").append(main_div)
+    });
+    
+    document.querySelector("#cart").addEventListener("click",goToCart)
+    function goToCart(){
+        window.location.href="cart.html"
+    }
+    
+  }
+
+ 
+</script>

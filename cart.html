@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cart</title>
+    <style>
+         h1 {
+        text-align: center;
+        color: darkblue;
+        font-family: calibri;
+        font-size: 40px;
+      }
+      .container{
+        display: grid;
+          grid-template-columns: repeat(3,1fr);
+      }
+    </style>
+</head>
+<body>
+    <h1>cart</h1>
+    <div class="container"></div>
+</body>
+</html>
+<script>
+    var arr= JSON.parse(localStorage.getItem("Meals")) ||[]
+    
+    showCart(arr)
+    function showCart(arr){
+        // document.querySelector("#main").innerHTML=""
+
+        arr.map(function(elem){
+            var image = document.createElement("img");
+      image.src = elem.strCategoryThumb;
+      var name = document.createElement("h2");
+      name.textContent = elem.strCategory;
+      var price = document.createElement("h3");
+      price.textContent = Math.floor(Math.random() * 500);
+      var button=document.createElement("button")
+      button.textContent="Remove from cart"
+      image_div = document.createElement("div");
+      image_div.append(image);
+      data_div = document.createElement("div");
+      data_div.append(name, price,button);
+      var main_div=document.createElement("div")
+      main_div.append(image_div, data_div);
+      document.querySelector(".container").append(main_div)
+        })
+    }
+</script>
